@@ -1,0 +1,609 @@
+version: "3"
+networks:
+  net_flaresolverr:
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+  net_jackett:
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+  net_sonarr:
+    ipam:
+      config:
+        - subnet: 192.168.3.0/24
+  net_radarr:
+    ipam:
+      config:
+        - subnet: 192.168.4.0/24
+  net_lidarr:
+    ipam:
+      config:
+        - subnet: 192.168.5.0/24
+  net_requestrr:
+    ipam:
+      config:
+        - subnet: 192.168.6.0/24
+  net_qbittorrent:
+    ipam:
+      config:
+        - subnet: 192.168.7.0/24
+  net_ombi:
+    ipam:
+      config:
+        - subnet: 192.168.8.0/24
+  net_sabnzbd:
+    ipam:
+      config:
+        - subnet: 192.168.9.0/24
+  net_prowlarr:
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+  net_rutorrent:
+    ipam:
+      config:
+        - subnet: 192.168.11.0/24
+  net_watchtower:
+    ipam:
+      config:
+        - subnet: 192.168.12.0/24
+  net_portainer:
+    ipam:
+      config:
+        - subnet: 192.168.13.0/24
+  net_bazarr:
+    ipam:
+      config:
+        - subnet: 192.168.14.0/24
+  net_overseer:
+    ipam:
+      config:
+        - subnet: 192.168.15.0/24
+  net_notifiarr:
+    ipam:
+      config:
+        - subnet: 192.168.16.0/24
+  net_nzbhydra2:
+    ipam:
+      config:
+        - subnet: 192.168.17.0/24
+  net_readarr:
+    ipam:
+      config:
+        - subnet: 192.168.18.0/24
+
+volumes:
+  vol_downloads:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/download
+      o: bind
+  vol_media:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/media
+      o: bind
+  vol_flaresolverr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/flaresolverr
+      o: bind
+  vol_jackett:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/jackett
+      o: bind
+  vol_sonarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/sonarr
+      o: bind
+  vol_radarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/radarr
+      o: bind
+  vol_lidarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/lidarr
+      o: bind
+  vol_requestrr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/requestrr
+      o: bind
+  vol_qbittorrent:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/qbittorrent
+      o: bind
+  vol_ombi:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/ombi
+      o: bind
+  vol_sabnzbd:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/sabnzbd
+      o: bind
+  vol_prowlarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/prowlarr
+      o: bind
+  vol_rutorrent:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/rutorrent
+      o: bind
+  vol_watchtower:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/watchtower
+      o: bind
+  vol_nginx:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/nginx
+      o: bind
+  vol_portainer:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/portainer
+      o: bind
+  vol_bazarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/bazarr
+      o: bind
+  vol_overseerr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/overseerr
+      o: bind
+  vol_notifiarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/notifiarr
+      o: bind
+  vol_notifiarr_tmp:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/tmp/notifiarr
+      o: bind
+  vol_nzbhydra2:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/nzbhydra2
+      o: bind
+  vol_readarr:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/readarr
+      o: bind
+services:
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+    networks:
+     net_watchtower:
+        ipv4_address: 192.168.12.2
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional	
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+     net_flaresolverr:
+        ipv4_address: 192.168.1.2
+    depends_on:
+      watchtower:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS=run options here #optional
+    volumes:
+      - vol_jackett:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+     net_jackett:
+        ipv4_address: 192.168.2.2
+    depends_on:
+      flaresolverr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_prowlarr:/config
+    networks:
+      net_prowlarr:
+        ipv4_address: 192.168.10.2
+    depends_on:
+      jackett:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  readarr:
+    container_name: readarr
+    image: cr.hotio.dev/hotio/readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_downloads:/downloads
+      - vol_readarr:/config
+    networks:
+      net_readarr:
+        ipv4_address: 192.168.18.2
+    depends_on:
+      prowlarr:
+        condition: service_started	 	
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_sonarr:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
+    networks:
+      net_sonarr:
+        ipv4_address: 192.168.3.2
+    depends_on:
+      prowlarr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro	
+      - vol_radarr:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
+    networks:
+      net_radarr:
+        ipv4_address: 192.168.4.2
+    depends_on:
+      sonarr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_lidarr:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
+    networks:
+      net_lidarr:
+        ipv4_address: 192.168.5.2
+    depends_on:
+      radarr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  ombi:
+    image: lscr.io/linuxserver/ombi:latest
+    container_name: ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_ombi:/config
+    networks:
+      net_ombi:
+        ipv4_address: 192.168.8.2
+    depends_on:
+      lidarr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  requestrr:
+    image: lscr.io/linuxserver/requestrr:latest
+    container_name: requestrr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_requestrr:/config
+    networks:
+      net_requestrr:
+        ipv4_address: 192.168.6.2
+    depends_on:
+      ombi:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_portainer:/data
+    networks:
+      net_portainer:
+        ipv4_address: 192.168.13.2
+    depends_on:
+      requestrr:
+        condition: service_started
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_bazarr:/config
+      - vol_media:/media
+    networks:
+      net_bazarr:
+        ipv4_address: 192.168.14.2
+    depends_on:
+      portainer:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_overseerr:/config
+    networks:
+      net_overseer:
+        ipv4_address: 192.168.15.2
+    depends_on:
+      bazarr:
+        condition: service_started
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    restart: always
+    networks:
+      net_notifiarr:
+        ipv4_address: 192.168.16.2
+    depends_on:
+      overseerr:
+        condition: service_started
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/machine-id:/etc/machine-id
+      - vol_notifiarr:/config
+      - vol_notifiarr_tmp:/var/run/utmp
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+  nzbhydra2:
+    image: lscr.io/linuxserver/nzbhydra2:latest
+    container_name: nzbhydra2
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_nzbhydra2:/config
+      - vol_downloads:/downloads
+    networks:
+      net_nzbhydra2:
+        ipv4_address: 192.168.17.2
+    depends_on:
+      notifiarr:
+        condition: service_started	 	
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  nginx-base:
+    image: nginx:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_nginx:/etc/nginx/conf.d/:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - net_sonarr
+      - net_flaresolverr
+      - net_jackett
+      - net_radarr
+      - net_prowlarr
+      - net_lidarr
+      - net_ombi
+      - net_requestrr
+      - net_portainer
+      - net_bazarr
+      - net_overseer
+      - net_notifiarr
+      - net_nzbhydra2
+      - net_readarr
+    depends_on:
+      nzbhydra2:
+        condition: service_started
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
