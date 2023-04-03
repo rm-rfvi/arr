@@ -1,3 +1,4 @@
+---
 version: "3"
 networks:
   net_flaresolverr:
@@ -72,7 +73,6 @@ networks:
     ipam:
       config:
         - subnet: 192.168.18.0/24
-
 volumes:
   vol_downloads:
     driver: local
@@ -218,16 +218,15 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_LABEL_ENABLE=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
     networks:
-     net_watchtower:
+      net_watchtower:
         ipv4_address: 192.168.12.2
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -238,22 +237,20 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional	
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
-     net_flaresolverr:
+      net_flaresolverr:
         ipv4_address: 192.168.1.2
     depends_on:
       watchtower:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
-
+      - com.centurylinklabs.watchtower.enable=true
   jackett:
     image: linuxserver/jackett
     container_name: jackett
@@ -261,23 +258,22 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - AUTO_UPDATE=true #optional
-      - RUN_OPTS=run options here #optional
+      - AUTO_UPDATE=true
+      - RUN_OPTS=run options here
     volumes:
       - vol_jackett:/config
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
-     net_jackett:
+      net_jackett:
         ipv4_address: 192.168.2.2
     depends_on:
       flaresolverr:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
@@ -285,7 +281,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -299,8 +295,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   readarr:
     container_name: readarr
     image: cr.hotio.dev/hotio/readarr
@@ -308,7 +303,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -320,11 +315,10 @@ services:
         ipv4_address: 192.168.18.2
     depends_on:
       prowlarr:
-        condition: service_started	 	
+        condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -332,7 +326,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -348,8 +342,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -357,11 +350,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/timezone:/etc/timezone:ro	
+      - /etc/timezone:/etc/timezone:ro
       - vol_radarr:/config
       - vol_media:/media
       - vol_downloads:/downloads
@@ -373,10 +366,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
-
-
+      - com.centurylinklabs.watchtower.enable=true
   lidarr:
     image: linuxserver/lidarr
     container_name: lidarr
@@ -384,7 +374,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -400,8 +390,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   ombi:
     image: lscr.io/linuxserver/ombi:latest
     container_name: ombi
@@ -409,7 +398,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -423,8 +412,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   requestrr:
     image: lscr.io/linuxserver/requestrr:latest
     container_name: requestrr
@@ -432,7 +420,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -446,9 +434,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
-
+      - com.centurylinklabs.watchtower.enable=true
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
@@ -456,7 +442,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     restart: always
     security_opt:
       - no-new-privileges:true
@@ -472,8 +458,7 @@ services:
       requestrr:
         condition: service_started
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
@@ -481,7 +466,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -496,8 +481,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -505,7 +489,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -519,8 +503,7 @@ services:
         condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
   notifiarr:
     container_name: notifiarr
     hostname: notifiarr
@@ -529,7 +512,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     restart: always
     networks:
       net_notifiarr:
@@ -545,9 +528,7 @@ services:
       - vol_notifiarr:/config
       - vol_notifiarr_tmp:/var/run/utmp
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
-
+      - com.centurylinklabs.watchtower.enable=true
   nzbhydra2:
     image: lscr.io/linuxserver/nzbhydra2:latest
     container_name: nzbhydra2
@@ -555,7 +536,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -567,26 +548,45 @@ services:
         ipv4_address: 192.168.17.2
     depends_on:
       notifiarr:
-        condition: service_started	 	
+        condition: service_started
     restart: always
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+      - com.centurylinklabs.watchtower.enable=true
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022
+    volumes:
+      - vol_sabnzbd:/config
+      - vol_downloads:/downloads
+      - /path/to/incomplete/downloads:/incomplete-downloads
+    net_sabnzbd:
+      ipv4_address: 192.168.9.2
+    restart: always
+    depends_on:
+      nzbhydra2:
+        condition: service_started
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
   nginx-base:
     image: nginx:latest
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
-      - UMASK_SET=022 #optional
+      - UMASK_SET=022
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - vol_nginx:/etc/nginx/conf.d/:ro
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     networks:
       - net_sonarr
       - net_flaresolverr
@@ -602,8 +602,9 @@ services:
       - net_notifiarr
       - net_nzbhydra2
       - net_readarr
+      - net_sabnzbd
     depends_on:
-      nzbhydra2:
+      sabnzbd:
         condition: service_started
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      - com.centurylinklabs.watchtower.enable=true
