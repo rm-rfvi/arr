@@ -78,7 +78,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /mnt/download
+      device: /mnt/scratch
       o: bind
   vol_media:
     driver: local
@@ -90,49 +90,49 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/flaresolverr
+      device: /docker/run/flaresolverr
       o: bind
   vol_jackett:
     driver: local
     driver_opts:
       type: none
-      device: /opt/jackett
+      device: /opt/docker/run/jackett
       o: bind
   vol_sonarr:
     driver: local
     driver_opts:
       type: none
-      device: /opt/sonarr
+      device: /opt/docker/run/sonarr
       o: bind
   vol_radarr:
     driver: local
     driver_opts:
       type: none
-      device: /opt/radarr
+      device: /opt/docker/run/radarr
       o: bind
   vol_lidarr:
     driver: local
     driver_opts:
       type: none
-      device: /opt/lidarr
+      device: /opt/docker/run/lidarr
       o: bind
   vol_requestrr:
     driver: local
     driver_opts:
       type: none
-      device: /opt/requestrr
+      device: /opt/docker/run/requestrr
       o: bind
   vol_qbittorrent:
     driver: local
     driver_opts:
       type: none
-      device: /opt/qbittorrent
+      device: /opt/docker/run/qbittorrent
       o: bind
   vol_ombi:
     driver: local
     driver_opts:
       type: none
-      device: /opt/ombi
+      device: /opt/docker/run/ombi
       o: bind
   vol_sabnzbd:
     driver: local
@@ -144,7 +144,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/prowlarr
+      device: /opt/docker/run/prowlarr
       o: bind
   vol_rutorrent:
     driver: local
@@ -168,7 +168,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/portainer
+      device: /opt/docker/run/portainer
       o: bind
   vol_bazarr:
     driver: local
@@ -563,7 +563,6 @@ services:
     volumes:
       - vol_sabnzbd:/config
       - vol_downloads:/downloads
-      - /path/to/incomplete/downloads:/incomplete-downloads
     net_sabnzbd:
       ipv4_address: 192.168.9.2
     restart: always
