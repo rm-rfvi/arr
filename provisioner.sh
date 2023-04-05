@@ -1,46 +1,28 @@
 #!/bin/bash
 
 # Define server names
-jackett_server="jackett2.dc.home"
-flaresolverr_server="flaresolverr2.dc.home"
-sonarr_server="sonarr2.dc.home"
-radarr_server="radarr2.dc.home"
-prowlarr_server="prowlarr2.dc.home"
-lidarr_server="lidarr2.dc.home"
-ombi_server="ombi2.dc.home"
-requestrr_server="requestrr.dc.home"
-portainarr_server="portainarr.dc.home"
-bazarr_server="bazarr.dc.home"
-overseerr_server="overseerr.dc.home"
-notifiarr_server="notifiarr.dc.home"
-nzbhydra_server="nzbhydra.dc.home"
-readarr_server="readarr.dc.home"
-$calibre_server"calibre.dc.home"
-$calibre_web_server="calibreweb.dc.home"
+jackett_server="jackett.axfr.cc"
+flaresolverr_server="flaresolverr.axfr.cc"
+sonarr_server="sonarr.axfr.cc"
+radarr_server="radarr.axfr.cc"
+prowlarr_server="prowlarr.axfr.cc"
+lidarr_server="lidarr.axfr.cc"
+ombi_server="ombi.axfr.cc"
+requestrr_server="requestrr.axfr.cc"
+portainarr_server="portainarr.axfr.cc"
+bazarr_server="bazarr.axfr.cc"
+overseerr_server="overseerr.axfr.cc"
+notifiarr_server="notifiarr.axfr.cc"
+nzbhydra_server="nzbhydra.axfr.cc"
+readarr_server="readarr.axfr.cc"
+calibre_server"calibresvc.axfr.cc"
+calibre_web_server="calibre.axfr.cc"
 
 # Define the lines to add to /etc/fstab
-line1="stor01.dc.home:/mnt/Pool0/scratch     /mnt/download   nfs    defaults,user,rw           0       0"
-line2="stor01.dc.home:/mnt/Pool0/media0        /mnt/media      nfs    defaults,user,rw        0       0"
+line1="stor01.axfr.cc:/mnt/Pool0/scratch     /mnt/download   nfs    defaults,user,rw           0       0"
+line2="stor01.axfr.cc:/mnt/Pool0/media0        /mnt/media      nfs    defaults,user,rw        0       0"
 
-
-sudo apt-get update
-sudo apt-get install \
-  ca-certificates \
-  curl \
-  gnupg
-  
-sudo mkdir -m 0755 -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  
-sudo apt-get update
-  
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin nfs-common -y
-  
+ 
 
 # Create directories
 sudo mkdir -p /opt/docker
@@ -51,20 +33,22 @@ sudo mkdir -p /opt/docker/run/notifiarr
 sudo mkdir -p /opt/docker/tmp/notifiarr
 sudo mkdir -p /opt/docker/run/overseerr
 sudo mkdir -p /opt/docker/run/nzbhydra2
-sudo mkdir -p /opt/flaresolverr
-sudo mkdir -p /opt/sonarr
-sudo mkdir -p /opt/jackett
-sudo mkdir -p /opt/radarr
-sudo mkdir -p /opt/lidarr
-sudo mkdir -p /opt/requestrr
-sudo mkdir -p /opt/qbittorrent
-sudo mkdir -p /opt/ombi 
-sudo mkdir -p /opt/prowlarr
-sudo mkdir -p /opt/portainer
-sudo mkdir -p /opt/bazarr
 sudo mkdir -p /opt/docker/run/readarr
 sudo mkdir -p /opt/docker/run/calibre
 sudo mkdir -p /opt/docker/run/calibre_web
+
+sudo mkdir -p /opt/docker/run/flaresolverr
+sudo mkdir -p /opt/docker/run/sonarr
+sudo mkdir -p /opt/docker/run/jackett
+sudo mkdir -p /opt/docker/run/radarr
+sudo mkdir -p /opt/docker/run/lidarr
+sudo mkdir -p /opt/docker/run/requestrr
+sudo mkdir -p /opt/docker/run/qbittorrent
+sudo mkdir -p /opt/docker/run/ombi
+sudo mkdir -p /opt/docker/run/prowlarr
+sudo mkdir -p /opt/docker/run/portainer
+sudo mkdir -p /opt/docker/run/bazarr
+
 
 
 sudo mkdir -p /opt/sabnzbd
