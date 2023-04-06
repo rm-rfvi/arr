@@ -127,7 +127,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/bazarr
+      device: /opt/docker/run/bazarr
       o: bind
   vol_overseerr:
     driver: local
