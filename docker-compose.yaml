@@ -32,7 +32,7 @@ volumes:
     driver_opts:
       type: none
       device: /mnt/media
-      o: bindz
+      o: bind
   vol_whisparr:
     driver: local
     driver_opts:
