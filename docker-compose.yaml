@@ -115,7 +115,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/nginx
+      device: /opt/docker/run/nginx
       o: bind
   vol_portainer:
     driver: local
