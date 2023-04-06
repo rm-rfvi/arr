@@ -492,6 +492,7 @@ services:
      net_whisparr:
     labels:
       - com.centurylinklabs.watchtower.enable=true
+ qbittorrent:
   image: binhex/arch-qbittorrentvpn
   cap_add:
     - NET_ADMIN
