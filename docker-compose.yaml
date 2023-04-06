@@ -1,25 +1,25 @@
 ---
 version: "3"
 networks:
-  net_flaresolverr:
-  net_whisparr:
-  net_jackett:
-  net_sonarr:
-  net_radarr:
-  net_lidarr:
-  net_requestrr:
-  net_qbittorrent:
-  net_ombi:
-  net_sabnzbd:
-  net_prowlarr:
-  net_rutorrent:
-  net_watchtower:
-  net_portainer:
-  net_bazarr:
-  net_overseer:
-  net_notifiarr:
-  net_nzbhydra2:
-  net_readarr:
+  net_flaresolverr: null
+  net_whisparr: null
+  net_jackett: null
+  net_sonarr: null
+  net_radarr: null
+  net_lidarr: null
+  net_requestrr: null
+  net_qbittorrent: null
+  net_ombi: null
+  net_sabnzbd: null
+  net_prowlarr: null
+  net_rutorrent: null
+  net_watchtower: null
+  net_portainer: null
+  net_bazarr: null
+  net_overseer: null
+  net_notifiarr: null
+  net_nzbhydra2: null
+  net_readarr: null
 volumes:
   vol_downloads:
     driver: local
@@ -39,7 +39,6 @@ volumes:
       type: none
       device: /opt/docker/run/whisparr
       o: bind
-
   vol_flaresolverr:
     driver: local
     driver_opts:
@@ -161,7 +160,7 @@ volumes:
       device: /opt/docker/run/readarr
       o: bind
 services:
- nginx-base:
+  nginx-base:
     image: nginx:latest
     environment:
       - PUID=1000
@@ -196,7 +195,7 @@ services:
       - net_qbittorrent
     labels:
       - com.centurylinklabs.watchtower.enable=true
- watchtower:
+  watchtower:
     image: containrrr/watchtower
     restart: always
     volumes:
@@ -212,10 +211,10 @@ services:
       - WATCHTOWER_LABEL_ENABLE=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
     networks:
-      net_watchtower:
+      net_watchtower: null
     labels:
       - com.centurylinklabs.watchtower.enable=true
- flaresolverr:
+  flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
     environment:
@@ -231,11 +230,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
-      net_flaresolverr:
+      net_flaresolverr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- jackett:
+  jackett:
     image: linuxserver/jackett
     container_name: jackett
     environment:
@@ -250,11 +249,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
-      net_jackett:
+      net_jackett: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- prowlarr:
+  prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
@@ -268,11 +267,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - vol_prowlarr:/config
     networks:
-      net_prowlarr:
+      net_prowlarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- readarr:
+  readarr:
     container_name: readarr
     image: cr.hotio.dev/hotio/readarr
     environment:
@@ -287,11 +286,11 @@ services:
       - vol_downloads:/downloads
       - vol_readarr:/config
     networks:
-      net_readarr:
+      net_readarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- sonarr:
+  sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
     environment:
@@ -307,11 +306,11 @@ services:
       - vol_media:/media
       - vol_downloads:/downloads
     networks:
-      net_sonarr:
+      net_sonarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- radarr:
+  radarr:
     image: linuxserver/radarr
     container_name: radarr
     environment:
@@ -327,11 +326,11 @@ services:
       - vol_media:/media
       - vol_downloads:/downloads
     networks:
-      net_radarr:
+      net_radarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- lidarr:
+  lidarr:
     image: linuxserver/lidarr
     container_name: lidarr
     environment:
@@ -347,11 +346,11 @@ services:
       - vol_media:/media
       - vol_downloads:/downloads
     networks:
-      net_lidarr:
+      net_lidarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- ombi:
+  ombi:
     image: lscr.io/linuxserver/ombi:latest
     container_name: ombi
     environment:
@@ -365,11 +364,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - vol_ombi:/config
     networks:
-      net_ombi:
+      net_ombi: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- requestrr:
+  requestrr:
     image: lscr.io/linuxserver/requestrr:latest
     container_name: requestrr
     environment:
@@ -383,11 +382,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - vol_requestrr:/config
     networks:
-      net_requestrr:
+      net_requestrr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- bazarr:
+  bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     environment:
@@ -402,11 +401,11 @@ services:
       - vol_bazarr:/config
       - vol_media:/media
     networks:
-      net_bazarr:
+      net_bazarr: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- overseerr:
+  overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
     environment:
@@ -420,11 +419,11 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - vol_overseerr:/config
     networks:
-      net_overseer:
+      net_overseer: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- notifiarr:
+  notifiarr:
     container_name: notifiarr
     hostname: notifiarr
     image: golift/notifiarr
@@ -435,7 +434,7 @@ services:
       - UMASK_SET=022
     restart: always
     networks:
-      net_notifiarr:
+      net_notifiarr: null
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -445,7 +444,7 @@ services:
       - vol_notifiarr_tmp:/var/run/utmp
     labels:
       - com.centurylinklabs.watchtower.enable=true
- nzbhydra2:
+  nzbhydra2:
     image: lscr.io/linuxserver/nzbhydra2:latest
     container_name: nzbhydra2
     environment:
@@ -460,11 +459,11 @@ services:
       - vol_nzbhydra2:/config
       - vol_downloads:/downloads
     networks:
-      net_nzbhydra2:
+      net_nzbhydra2: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
- sabnzbd:
+  sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     environment:
@@ -476,10 +475,10 @@ services:
       - vol_sabnzbd:/config
       - vol_downloads:/downloads
     networks:
-     net_sabnzbd:
+      net_sabnzbd: null
     labels:
       - com.centurylinklabs.watchtower.enable=true
- whisparr:
+  whisparr:
     container_name: whisparr
     image: cr.hotio.dev/hotio/whisparr
     environment:
@@ -490,34 +489,33 @@ services:
     volumes:
       - vol_whisparr:/config
     networks:
-     net_whisparr:
+      net_whisparr: null
     labels:
       - com.centurylinklabs.watchtower.enable=true
- qbittorrent:
-  image: binhex/arch-qbittorrentvpn
-  cap_add:
-    - NET_ADMIN
-  devices:
-    - /dev/net/tun
+  qbittorrent:
+    image: binhex/arch-qbittorrentvpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
     networks:
-      net_qbittorrent:
-  volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - vol_qbittorrent:/config
-    - vol_downloads:/data
-  environment:
-    - PUID=1001
-    - PGID=1001
-    - VPN_ENABLED=yes
-    - VPN_PROV=pia
-    - VPN_CLIENT=openvpn
-    - VPN_USER=p8188981
-    - VPN_PASS=cR!PPL3S!
-    - STRICT_PORT_FORWARD=yes
-    - ENABLE_PRIVOXY=yes
-    - WEBUI_PORT=8080
-    - LAN_NETWORK=10.0.0.0/8
-  restart: unless-stopped
-  labels:
-   - "com.centurylinklabs.watchtower.enable=true"
-
+      net_qbittorrent: null
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - vol_qbittorrent:/config
+      - vol_downloads:/data
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - VPN_ENABLED=yes
+      - VPN_PROV=pia
+      - VPN_CLIENT=openvpn
+      - VPN_USER=p8188981
+      - VPN_PASS=cR!PPL3S!
+      - STRICT_PORT_FORWARD=yes
+      - ENABLE_PRIVOXY=yes
+      - WEBUI_PORT=8080
+      - LAN_NETWORK=10.0.0.0/8
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
