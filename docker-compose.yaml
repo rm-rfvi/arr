@@ -91,7 +91,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/sabnzbd
+      device: /opt/docker/run/sabnzbd
       o: bind
   vol_prowlarr:
     driver: local
@@ -103,13 +103,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /opt/rutorrent
+      device: /opt/docker/run/rutorrent
       o: bind
   vol_watchtower:
     driver: local
     driver_opts:
       type: none
-      device: /opt/watchtower
+      device: /opt/docker/run//watchtower
       o: bind
   vol_nginx:
     driver: local
