@@ -1,3 +1,27 @@
+#!/bin/bash
+
+# Define server names
+jackett_server="jackett.axfr.cc"
+flaresolverr_server="flaresolverr.axfr.cc"
+sonarr_server="sonarr.axfr.cc"
+radarr_server="radarr.axfr.cc"
+prowlarr_server="prowlarr.axfr.cc"
+lidarr_server="lidarr.axfr.cc"
+ombi_server="ombi.axfr.cc"
+requestrr_server="requestrr.axfr.cc"
+portainarr_server="portainarr.axfr.cc"
+bazarr_server="bazarr.axfr.cc"
+overseerr_server="overseerr.axfr.cc"
+notifiarr_server="notifiarr.axfr.cc"
+nzbhydra_server="nzbhydra.axfr.cc"
+readarr_server="readarr.axfr.cc"
+calibre_server="calibresvc.axfr.cc"
+calibre_web_server="calibre.axfr.cc"
+sabnzbd_server="sabnzbd.axfr.cc"
+whisparr_server="whisparr.axfr.cc"
+autobrr_server="autobrr.axfr.cc"
+qbittorrent_server="qbit.axfr.cc"
+
 # Create nginx jackett config file
 sudo tee /opt/docker/run/nginx/jackett.conf > /dev/null <<EOF
 
@@ -110,7 +134,7 @@ EOF
 #  }
 #}
 
-EOF
+#EOF
 
 
 # Create nginx requestrr config file
