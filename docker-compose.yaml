@@ -488,6 +488,7 @@ services:
       - UMASK_SET=022
     volumes:
       - vol_whisparr:/config
+      - /mnt/xxx:/media
     networks:
       net_whisparr: null
     labels:
@@ -510,8 +511,8 @@ services:
       - VPN_ENABLED=yes
       - VPN_PROV=pia
       - VPN_CLIENT=openvpn
-      - VPN_USER=p8188981
-      - VPN_PASS=cR!PPL3S!
+      - VPN_USER=
+      - VPN_PASS=
       - STRICT_PORT_FORWARD=yes
       - ENABLE_PRIVOXY=yes
       - WEBUI_PORT=8080
