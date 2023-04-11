@@ -53,13 +53,14 @@ sudo mkdir -p /opt/docker/run/whisparr
 sudo mkdir -p /opt/docker/run/portainer
 sudo mkdir -p /opt/docker/run/autobrr_postgres
 sudo mkdir -p /opt/docker/run/autobrr
-
 sudo mkdir -p /opt/docker/run/bazarr
 sudo mkdir -p /opt/docker/run/sabnzbd
-
 sudo mkdir -p /opt/docker/run/rutorrent
-
+sudo mkdir -p /opt/docker/run/rutorrent
 sudo mkdir -p /opt/docker/run/nginx
+sudo mkdir -p /opt/docker/run/sonarr_anime
+sudo mkdir -p /opt/docker/run/sonarr_hevc
+
 sudo mkdir -p /mnt/download
 sudo mkdir -p /mnt/media
 sudo mkdir -p /mnt/scratch
