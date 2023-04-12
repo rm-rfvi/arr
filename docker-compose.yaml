@@ -2,13 +2,14 @@
 version: "3"
 networks:
   net_flaresolverr: null
-  net_whisparr: null
   net_jackett: null
   net_sonarr: null
+  net_sonarr_anime: null
+  net_sonarr_hevc: null
   net_radarr: null
+  net_radarr_hevc: null
   net_lidarr: null
   net_requestrr: null
-  net_qbittorrent: null
   net_ombi: null
   net_sabnzbd: null
   net_prowlarr: null
@@ -20,6 +21,10 @@ networks:
   net_notifiarr: null
   net_nzbhydra2: null
   net_readarr: null
+  net_linkding: null
+  net_calibre_svc: null
+  net_calibre: null
+  net_reciperr: null
 volumes:
   vol_downloads:
     driver: local
@@ -33,11 +38,11 @@ volumes:
       type: none
       device: /mnt/media
       o: bind
-  vol_whisparr:
+  vol_linkding:
     driver: local
     driver_opts:
       type: none
-      device: /opt/docker/run/whisparr
+      device: /opt/docker/run/linkding
       o: bind
   vol_flaresolverr:
     driver: local
@@ -57,11 +62,29 @@ volumes:
       type: none
       device: /opt/docker/run/sonarr
       o: bind
+  vol_sonarr_anime:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/sonarr_anime
+      o: bind
+  vol_sonarr_hevc:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/sonarr_hevc
+      o: bind
   vol_radarr:
     driver: local
     driver_opts:
       type: none
       device: /opt/docker/run/radarr
+      o: bind
+  vol_radarr_hevc:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/radarr_hevc
       o: bind
   vol_lidarr:
     driver: local
@@ -74,12 +97,6 @@ volumes:
     driver_opts:
       type: none
       device: /opt/docker/run/requestrr
-      o: bind
-  vol_qbittorrent:
-    driver: local
-    driver_opts:
-      type: none
-      device: /opt/docker/run/qbittorrent
       o: bind
   vol_ombi:
     driver: local
@@ -159,40 +176,50 @@ volumes:
       type: none
       device: /opt/docker/run/readarr
       o: bind
+  vol_calibre:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/calibre
+      o: bind
+  vol_calibre_svc:
+    driver: local
+    driver_opts:
+      type: none
+      device: /opt/docker/run/calibre_svc
+      o: bind
 services:
-  nginx-base:
-    image: nginx:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Adelaide
-      - UMASK_SET=022
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/timezone:/etc/timezone:ro
-      - vol_nginx:/etc/nginx/conf.d/:ro
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
     ports:
       - 80:80
+      - 81:81
       - 443:443
+    volumes:
+      - vol_nginx:/data
     networks:
-      - net_sonarr
-      - net_flaresolverr
-      - net_jackett
-      - net_radarr
-      - net_prowlarr
-      - net_lidarr
-      - net_ombi
-      - net_requestrr
-      - net_portainer
-      - net_bazarr
-      - net_overseer
-      - net_notifiarr
-      - net_nzbhydra2
-      - net_readarr
-      - net_sabnzbd
-      - net_whisparr
-      - net_qbittorrent
+      net_sonarr: null
+      net_sonarr_anime: null
+      net_sonarr_hevc: null
+      net_sabnzbd: null
+      net_prowlarr: null
+      net_jackett: null
+      net_bazarr: null
+      net_portainer: null
+      net_ombi: null
+      net_lidarr: null
+      net_radarr: null
+      net_requestrr: null
+      net_overseer: null
+      net_notifiarr: null
+      net_nzbhydra2: null
+      net_radarr_hevc: null
+      net_linkding: null
+      net_readarr: null
+      net_calibre_svc: null
+      net_calibre: null
+      net_reciperr: null
     labels:
       - com.centurylinklabs.watchtower.enable=true
   watchtower:
@@ -266,6 +293,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - vol_prowlarr:/config
+    ports:
+      - 9696:9696
     networks:
       net_prowlarr: null
     restart: always
@@ -307,6 +336,46 @@ services:
       - vol_downloads:/downloads
     networks:
       net_sonarr: null
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  sonarr_hevc:
+    image: linuxserver/sonarr
+    container_name: sonarr_hevc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_sonarr_hevc:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
+    networks:
+      net_sonarr_hevc: null
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  sonarr_anime:
+    image: linuxserver/sonarr
+    container_name: sonarr_anime
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Adelaide
+      - UMASK_SET=022
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_sonarr_anime:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
+    networks:
+      net_sonarr_anime: null
     restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
@@ -478,45 +547,75 @@ services:
       net_sabnzbd: null
     labels:
       - com.centurylinklabs.watchtower.enable=true
-  whisparr:
-    container_name: whisparr
-    image: cr.hotio.dev/hotio/whisparr
+  radarr_hevc:
+    image: linuxserver/radarr
+    container_name: radarr_hevc
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Australia/Adelaide
       - UMASK_SET=022
     volumes:
-      - vol_whisparr:/config
-      - /mnt/xxx:/media
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_radarr_hevc:/config
+      - vol_media:/media
+      - vol_downloads:/downloads
     networks:
-      net_whisparr: null
+      net_radarr: null
+    restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
-  qbittorrent:
-    image: binhex/arch-qbittorrentvpn
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun
+  linkding:
+    container_name: arr-linkding
+    image: sissbruecker/linkding:latest
+    volumes:
+      - vol_linkding:/etc/linkding/data
     networks:
-      net_qbittorrent: null
+      net_linkding: null
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  calibre:
+    image: lscr.io/linuxserver/calibre:latest
+    container_name: calibre
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - TZ=Australia/Adelaide
+      - PASSWORD= #optional
+      - CLI_ARGS= #optional
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - vol_qbittorrent:/config
-      - vol_downloads:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_calibre_svc:/config
+    networks:
+      net_calibre_svc: null
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
     environment:
-      - PUID=1001
-      - PGID=1001
-      - VPN_ENABLED=yes
-      - VPN_PROV=pia
-      - VPN_CLIENT=openvpn
-      - VPN_USER=
-      - VPN_PASS=
-      - STRICT_PORT_FORWARD=yes
-      - ENABLE_PRIVOXY=yes
-      - WEBUI_PORT=8080
-      - LAN_NETWORK=10.0.0.0/8
-    restart: unless-stopped
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - vol_calibre:/config
+      - vol_media:/books
+    networks:
+      net_calibre: null
+    restart: always
     labels:
       - com.centurylinklabs.watchtower.enable=true
